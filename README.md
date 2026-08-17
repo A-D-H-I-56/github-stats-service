@@ -91,15 +91,16 @@ To read private contributions and contribution calendars via the GraphQL API, yo
 
 | Theme Name | Preview Description |
 | :--- | :--- |
-| `dark` *(default)* | GitHub Official Dark palette (`#0d1117`, `#58a6ff`, `#3fb950`) |
+| `dark` *(default)* | Modern GitHub Dark palette (`#090d16`, `#38bdf8`, `#4ade80`) |
+| `gatsby` | High contrast Black & Gatsby Pink/Orange (`#000000`, `#ffa7c4`, `#ffb86c`) |
+| `tokyonight` | Tokyo Night deep purple theme (`#16161e`, `#7aa2f7`, `#2ac3de`) |
 | `radical` | Deep purple with neon pink & cyan accents |
-| `tokyonight` | Tokyo Night theme (`#1a1b26`, `#70a5fd`, `#38bdae`) |
-| `dracula` | Iconic Dracula vampire palette (`#282a36`, `#ff79c6`, `#50fa7b`) |
-| `nord` | Arctic, north-bluish palette (`#2e3440`, `#88c0d0`, `#a3be8c`) |
-| `catppuccin` | Catppuccin Mocha palette (`#1e1e2e`, `#cba6f7`, `#a6e3a1`) |
-| `cyberpunk` | Neon cyberpunk contrast (`#0c0e14`, `#00f0ff`, `#ffe600`) |
-| `monokai` | Classic Monokai palette (`#272822`, `#eb1f6a`, `#a6e22e`) |
-| `light` | Crisp GitHub light theme |
+| `dracula` | Iconic Dracula vampire palette (`#21222c`, `#ff79c6`, `#50fa7b`) |
+| `nord` | Arctic, north-bluish palette (`#242933`, `#88c0d0`, `#a3be8c`) |
+| `catppuccin` | Catppuccin Mocha palette (`#181825`, `#cba6f7`, `#a6e3a1`) |
+| `cyberpunk` | Neon cyberpunk contrast (`#08080c`, `#00f0ff`, `#ffe600`) |
+| `monokai` | Classic Monokai palette (`#1e1f1c`, `#eb1f6a`, `#e6db74`) |
+| `light` | Crisp clean light theme (`#ffffff`, `#0284c7`, `#16a34a`) |
 
 ### Query Parameters
 
