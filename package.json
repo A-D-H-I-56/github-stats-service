@@ -1,0 +1,23 @@
+{
+  "name": "github-stats-svg",
+  "version": "1.0.0",
+  "description": "Lightweight, zero-dependency Vercel Serverless Function to fetch complete GitHub stats & private contributions as an SVG card",
+  "type": "module",
+  "main": "api/stats.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "test": "node test/test-render.js"
+  },
+  "keywords": [
+    "github-stats",
+    "github-readme-stats",
+    "vercel-serverless",
+    "svg-card",
+    "graphql"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
