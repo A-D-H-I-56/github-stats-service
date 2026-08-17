@@ -78,6 +78,9 @@ console.log('\n3️⃣ Testing SVG Card Generation & XML Compliance...');
   const sampleStats = {
     name: 'Octocat User',
     username: 'octocat',
+    totalRepos: 32,
+    publicRepos: 24,
+    privateRepos: 8,
     totalContributions: 1420,
     totalCommits: 1105,
     publicCommits: 805,
@@ -93,8 +96,11 @@ console.log('\n3️⃣ Testing SVG Card Generation & XML Compliance...');
   const theme = getTheme({ theme: 'gatsby' });
   const svg = renderStatsSvg(sampleStats, theme);
 
-  assert(svg.includes('<svg width="495" height="200"'), 'SVG contains correct dimensions');
+  assert(svg.includes('<svg width="495" height="265"'), 'SVG contains correct dimensions');
   assert(svg.includes('GitHub Stats: Octocat User (@octocat)'), 'SVG contains header with user info');
+  assert(svg.includes('TOTAL REPOSITORIES'), 'SVG contains Total Repositories tile');
+  assert(svg.includes('32'), 'SVG contains total repository count');
+  assert(svg.includes('24 Public / 8 Private'), 'SVG contains public / private repos breakdown');
   assert(svg.includes('1,420'), 'SVG contains formatted total contributions');
   assert(svg.includes('1,105'), 'SVG contains formatted total commits');
   assert(svg.includes('12'), 'SVG contains current streak');
