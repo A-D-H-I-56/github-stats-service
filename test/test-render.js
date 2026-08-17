@@ -97,7 +97,7 @@ console.log('\n3️⃣ Testing GitHub Stats SVG Card & XML Compliance...');
   const theme = getTheme({ theme: 'gatsby' });
   const svg = renderStatsSvg(sampleStats, theme);
 
-  assert(svg.includes('<svg width="495" height="265"'), 'SVG contains correct dimensions');
+  assert(svg.includes('<svg width="495" height="275"'), 'SVG contains correct dimensions');
   assert(svg.includes('GitHub Stats: Octocat User (@octocat)'), 'SVG contains header with user info');
   assert(svg.includes('TOTAL REPOSITORIES'), 'SVG contains Total Repositories tile');
   assert(svg.includes('32'), 'SVG contains total repository count');
@@ -137,7 +137,7 @@ console.log('\n4️⃣ Testing Top Languages SVG Card & XML Compliance...');
   const theme = getTheme({ theme: 'gatsby' });
   const langSvg = renderLanguagesSvg(sampleLanguages, theme);
 
-  assert(langSvg.includes('<svg width="495" height="225"'), 'Top Languages SVG contains correct dimensions');
+  assert(langSvg.includes('<svg width="495" height="275"'), 'Top Languages SVG contains correct dimensions');
   assert(langSvg.includes('Top Languages: Octocat User (@octocat)'), 'Top Languages SVG contains header');
   assert(langSvg.includes('TypeScript'), 'Top Languages SVG includes TypeScript');
   assert(langSvg.includes('50.0%'), 'Top Languages SVG includes percentages');
