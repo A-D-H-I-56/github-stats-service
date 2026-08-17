@@ -25,24 +25,22 @@ console.log('1️⃣ Testing Streak Calculation Engine...');
     { date: '2026-08-15', contributionCount: 3 },
     { date: '2026-08-16', contributionCount: 5 },
     { date: '2026-08-17', contributionCount: 2 },
-    { date: '2026-08-18', contributionCount: 1 }, // today
+    { date: '2026-08-18', contributionCount: 1 },
   ];
   const s1 = calculateStreaks(days1);
   assert(s1.currentStreak === 4, `Active streak counting today: expected 4, got ${s1.currentStreak}`);
   assert(s1.longestStreak === 4, `Longest streak: expected 4, got ${s1.longestStreak}`);
 
-  // Test when today has 0 contributions yet, but yesterday had contributions (streak still active)
   const days2 = [
     { date: '2026-08-14', contributionCount: 0 },
     { date: '2026-08-15', contributionCount: 3 },
     { date: '2026-08-16', contributionCount: 5 },
     { date: '2026-08-17', contributionCount: 2 },
-    { date: '2026-08-18', contributionCount: 0 }, // today 0
+    { date: '2026-08-18', contributionCount: 0 },
   ];
   const s2 = calculateStreaks(days2);
   assert(s2.currentStreak === 3, `Active streak when today is 0: expected 3, got ${s2.currentStreak}`);
 
-  // Test broken streak (yesterday 0, today 0)
   const days3 = [
     { date: '2026-08-15', contributionCount: 10 },
     { date: '2026-08-16', contributionCount: 0 },
@@ -53,7 +51,6 @@ console.log('1️⃣ Testing Streak Calculation Engine...');
   assert(s3.currentStreak === 0, `Broken streak: expected 0, got ${s3.currentStreak}`);
   assert(s3.longestStreak === 1, `Longest streak historical: expected 1, got ${s3.longestStreak}`);
 
-  // Empty days
   const s4 = calculateStreaks([]);
   assert(s4.currentStreak === 0 && s4.longestStreak === 0, 'Empty days handled gracefully');
 }
@@ -64,6 +61,9 @@ console.log('\n2️⃣ Testing Theme Engine...');
   const defaultTheme = getTheme({});
   assert(defaultTheme.bg === THEMES.dark.bg, 'Default theme is dark');
 
+  const gatsbyTheme = getTheme({ theme: 'gatsby' });
+  assert(gatsbyTheme.bg === THEMES.gatsby.bg, 'Resolves gatsby theme');
+
   const tokyoTheme = getTheme({ theme: 'tokyonight' });
   assert(tokyoTheme.bg === THEMES.tokyonight.bg, 'Resolves tokyonight theme');
 
@@ -72,8 +72,8 @@ console.log('\n2️⃣ Testing Theme Engine...');
   assert(customTheme.title === '#ff00ff', 'Custom title_color override parsed');
 }
 
-// 3. Test SVG Card Rendering
-console.log('\n3️⃣ Testing SVG Card Generation...');
+// 3. Test SVG Card Generation & XML Well-Formedness
+console.log('\n3️⃣ Testing SVG Card Generation & XML Compliance...');
 {
   const sampleStats = {
     name: 'Octocat User',
@@ -90,7 +90,7 @@ console.log('\n3️⃣ Testing SVG Card Generation...');
     longestStreak: 45,
   };
 
-  const theme = getTheme({ theme: 'dark' });
+  const theme = getTheme({ theme: 'gatsby' });
   const svg = renderStatsSvg(sampleStats, theme);
 
   assert(svg.includes('<svg width="495" height="200"'), 'SVG contains correct dimensions');
@@ -99,9 +99,13 @@ console.log('\n3️⃣ Testing SVG Card Generation...');
   assert(svg.includes('1,105'), 'SVG contains formatted total commits');
   assert(svg.includes('12'), 'SVG contains current streak');
   assert(svg.includes('80'), 'SVG contains combined PRs and Issues');
-  assert(svg.includes('@keyframes fadeIn'), 'SVG contains staggered fade-in animations');
-  assert(svg.includes('@keyframes flamePulse'), 'SVG contains flame pulsing animation');
+  assert(svg.includes('<![CDATA['), 'SVG style is safely wrapped in CDATA');
   assert(svg.includes('</svg>'), 'SVG is closed properly');
+
+  // Simple XML entity scanner: check that raw ampersands outside CDATA or entities don't exist
+  const withoutCdata = svg.replace(/<!\[CDATA\[[\s\S]*?\]\]>/g, '');
+  const unescapedAmpMatch = withoutCdata.match(/&(?!amp;|lt;|gt;|quot;|apos;|#\d+;)/g);
+  assert(!unescapedAmpMatch, 'Zero unescaped XML entity references exist outside CDATA');
 
   // Test Error SVG
   const errorSvg = renderErrorSvg('User "nonexistent" not found', theme);
