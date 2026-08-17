@@ -24,9 +24,12 @@ export default async function handler(req, res) {
     const stats = await fetchGitHubStats(username.trim());
     const svg = renderStatsSvg(stats, theme);
 
-    // Cache-Control: 30 minutes in browser, 1 hour on Vercel Edge CDN, 24 hours stale-while-revalidate
+    const maxAge = Math.max(0, parseInt(query.cache_seconds, 10) || 300);
+    const sMaxAge = Math.max(maxAge, 600);
+
+    // Cache-Control: responsive caching with stale-while-revalidate
     res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
-    res.setHeader('Cache-Control', 'public, max-age=1800, s-maxage=3600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', `public, max-age=${maxAge}, s-maxage=${sMaxAge}, stale-while-revalidate=86400`);
     
     return res.status(200).send(svg);
   } catch (error) {
