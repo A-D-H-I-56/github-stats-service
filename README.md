@@ -16,18 +16,24 @@ A lightweight, zero-dependency Node.js serverless microservice ready to deploy o
 
 ---
 
-## 📸 Markdown Usage Example
+## 📸 Markdown Usage Examples
 
-Once deployed, add this line to your GitHub profile `README.md`:
-
+### 1. GitHub Stats Card
 ```markdown
-![GitHub Stats](https://your-vercel-domain.vercel.app/api/stats?username=YOUR_GITHUB_USERNAME&theme=dark)
+![GitHub Stats](https://your-vercel-domain.vercel.app/api/stats?username=YOUR_GITHUB_USERNAME&theme=gatsby)
 ```
 
-Or with HTML:
+### 2. Top Languages Card
+```markdown
+![Top Languages](https://your-vercel-domain.vercel.app/api/languages?username=YOUR_GITHUB_USERNAME&theme=gatsby)
+```
 
+### Side-by-Side (HTML)
 ```html
-<img src="https://your-vercel-domain.vercel.app/api/stats?username=YOUR_GITHUB_USERNAME&theme=tokyonight" alt="GitHub Stats" />
+<div align="center">
+  <img src="https://your-vercel-domain.vercel.app/api/stats?username=YOUR_GITHUB_USERNAME&theme=gatsby" alt="GitHub Stats" />
+  <img src="https://your-vercel-domain.vercel.app/api/languages?username=YOUR_GITHUB_USERNAME&theme=gatsby" alt="Top Languages" />
+</div>
 ```
 
 ---

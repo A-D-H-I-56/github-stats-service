@@ -1,6 +1,7 @@
 import { calculateStreaks } from '../lib/github.js';
 import { getTheme, THEMES } from '../lib/themes.js';
 import { renderStatsSvg, renderErrorSvg } from '../lib/renderSvg.js';
+import { renderLanguagesSvg, renderLanguagesErrorSvg } from '../lib/renderLanguagesSvg.js';
 
 console.log('🧪 Starting GitHub Stats Microservice Test Suite...\n');
 
@@ -72,8 +73,8 @@ console.log('\n2️⃣ Testing Theme Engine...');
   assert(customTheme.title === '#ff00ff', 'Custom title_color override parsed');
 }
 
-// 3. Test SVG Card Generation & XML Well-Formedness
-console.log('\n3️⃣ Testing SVG Card Generation & XML Compliance...');
+// 3. Test SVG Card Generation & XML Well-Formedness (Stats Card)
+console.log('\n3️⃣ Testing GitHub Stats SVG Card & XML Compliance...');
 {
   const sampleStats = {
     name: 'Octocat User',
@@ -108,14 +109,48 @@ console.log('\n3️⃣ Testing SVG Card Generation & XML Compliance...');
   assert(svg.includes('<![CDATA['), 'SVG style is safely wrapped in CDATA');
   assert(svg.includes('</svg>'), 'SVG is closed properly');
 
-  // Simple XML entity scanner: check that raw ampersands outside CDATA or entities don't exist
   const withoutCdata = svg.replace(/<!\[CDATA\[[\s\S]*?\]\]>/g, '');
   const unescapedAmpMatch = withoutCdata.match(/&(?!amp;|lt;|gt;|quot;|apos;|#\d+;)/g);
   assert(!unescapedAmpMatch, 'Zero unescaped XML entity references exist outside CDATA');
 
-  // Test Error SVG
   const errorSvg = renderErrorSvg('User "nonexistent" not found', theme);
   assert(errorSvg.includes('User &quot;nonexistent&quot; not found'), 'Error SVG renders and escapes message');
+}
+
+// 4. Test Top Languages SVG Card & XML Compliance
+console.log('\n4️⃣ Testing Top Languages SVG Card & XML Compliance...');
+{
+  const sampleLanguages = {
+    name: 'Octocat User',
+    username: 'octocat',
+    languages: [
+      { name: 'TypeScript', color: '#3178c6', size: 50000, percent: 50.0, formattedPercent: '50.0%' },
+      { name: 'JavaScript', color: '#f1e05a', size: 30000, percent: 30.0, formattedPercent: '30.0%' },
+      { name: 'Python', color: '#3572A5', size: 10000, percent: 10.0, formattedPercent: '10.0%' },
+      { name: 'HTML', color: '#e34c26', size: 5000, percent: 5.0, formattedPercent: '5.0%' },
+      { name: 'CSS', color: '#563d7c', size: 3000, percent: 3.0, formattedPercent: '3.0%' },
+      { name: 'Shell', color: '#89e051', size: 2000, percent: 2.0, formattedPercent: '2.0%' },
+    ],
+    totalBytes: 100000,
+  };
+
+  const theme = getTheme({ theme: 'gatsby' });
+  const langSvg = renderLanguagesSvg(sampleLanguages, theme);
+
+  assert(langSvg.includes('<svg width="495" height="225"'), 'Top Languages SVG contains correct dimensions');
+  assert(langSvg.includes('Top Languages: Octocat User (@octocat)'), 'Top Languages SVG contains header');
+  assert(langSvg.includes('TypeScript'), 'Top Languages SVG includes TypeScript');
+  assert(langSvg.includes('50.0%'), 'Top Languages SVG includes percentages');
+  assert(langSvg.includes('clip-path="url(#progressBarClip)"'), 'Top Languages SVG includes progress bar');
+  assert(langSvg.includes('<![CDATA['), 'Top Languages SVG style is safely wrapped in CDATA');
+  assert(langSvg.includes('</svg>'), 'Top Languages SVG is closed properly');
+
+  const withoutCdataLang = langSvg.replace(/<!\[CDATA\[[\s\S]*?\]\]>/g, '');
+  const unescapedAmpLangMatch = withoutCdataLang.match(/&(?!amp;|lt;|gt;|quot;|apos;|#\d+;)/g);
+  assert(!unescapedAmpLangMatch, 'Zero unescaped XML entity references in Languages SVG');
+
+  const langErrSvg = renderLanguagesErrorSvg('User not found', theme);
+  assert(langErrSvg.includes('Top Languages Error'), 'Languages error SVG renders correctly');
 }
 
 console.log(`\n========================================`);

@@ -8,6 +8,14 @@
     {
       "source": "/stats",
       "destination": "/api/stats.js"
+    },
+    {
+      "source": "/api/languages",
+      "destination": "/api/languages.js"
+    },
+    {
+      "source": "/languages",
+      "destination": "/api/languages.js"
     }
   ],
   "headers": [
