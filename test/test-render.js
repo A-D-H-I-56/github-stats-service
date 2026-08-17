@@ -93,12 +93,14 @@ console.log('\n3️⃣ Testing SVG Card Generation...');
   const theme = getTheme({ theme: 'dark' });
   const svg = renderStatsSvg(sampleStats, theme);
 
-  assert(svg.includes('<svg width="495" height="195"'), 'SVG contains correct dimensions');
+  assert(svg.includes('<svg width="495" height="200"'), 'SVG contains correct dimensions');
   assert(svg.includes('GitHub Stats: Octocat User (@octocat)'), 'SVG contains header with user info');
   assert(svg.includes('1,420'), 'SVG contains formatted total contributions');
   assert(svg.includes('1,105'), 'SVG contains formatted total commits');
   assert(svg.includes('12'), 'SVG contains current streak');
   assert(svg.includes('80'), 'SVG contains combined PRs and Issues');
+  assert(svg.includes('@keyframes cardFadeIn'), 'SVG contains staggered fade-in animations');
+  assert(svg.includes('@keyframes flamePulse'), 'SVG contains flame pulsing animation');
   assert(svg.includes('</svg>'), 'SVG is closed properly');
 
   // Test Error SVG
